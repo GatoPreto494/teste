@@ -46,34 +46,43 @@
     // Enviar cadastro (POST)
     document.getElementById("cadastroForm").addEventListener("submit", async function(e){
       e.preventDefault();
+      console.log("Formulário de cadastro enviado."); // Log de início
       const formData = {
         nome: this.nome.value,
         email: this.email.value,
         telefone: this.telefone.value
       };
+      console.log("Dados do formulário:", formData); // Log dos dados a serem enviados
 
       try {
+        console.log("Iniciando requisição POST para a URL do script."); // Log antes da requisição
         const response = await fetch(scriptURL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData)
         });
+        console.log("Resposta da requisição POST recebida."); // Log após a requisição
 
         const result = await response.json();
+        console.log("Resultado do cadastro:", result); // Log do resultado da requisição
         alert(result.message);
         this.reset();
         carregarUsuarios();
       } catch (error) {
         alert("Erro ao cadastrar.");
+        console.error("Erro no processo de cadastro:", error); // Log detalhado do erro
       }
     });
 
     // Carregar lista de usuários (GET)
     async function carregarUsuarios() {
+      console.log("Iniciando o carregamento de usuários."); // Log de início da função
       try {
-        // Adiciona o parâmetro 'api=1' para a requisição GET
+        console.log("Iniciando requisição GET para a URL do script."); // Log antes da requisição
         const response = await fetch(scriptURL + "?api=1");
+        console.log("Resposta da requisição GET recebida."); // Log após a requisição
         const users = await response.json();
+        console.log("Dados de usuários recebidos:", users); // Log dos dados recebidos
         
         const tbody = document.querySelector("#tabelaUsuarios tbody");
         tbody.innerHTML = "";
@@ -95,12 +104,14 @@
           `;
           tbody.appendChild(tr);
         });
+        console.log("Tabela de usuários atualizada."); // Log de sucesso
       } catch (error) {
-        console.error("Erro ao carregar usuários", error);
+        console.error("Erro ao carregar usuários", error); // Log detalhado do erro
       }
     }
 
     // Carregar usuários ao abrir
+    console.log("Página carregada. Chamando a função para carregar usuários."); // Log ao carregar a página
     carregarUsuarios();
   </script>
 </body>
