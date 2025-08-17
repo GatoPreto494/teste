@@ -1,88 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cadastro + Listagem</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
-    form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background: #fff; width: 300px; }
-    label { display:block; margin-top:10px; font-weight:bold; }
-    input { width:100%; padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px; }
-    button { margin-top:15px; padding:10px; width:100%; background:#28a745; color:white; border:0; border-radius:4px; cursor:pointer; }
-    button:hover { background:#218838; }
-    table { border-collapse:collapse; width:100%; margin-top:20px; background:#fff; border:1px solid #ddd; }
-    th,td { padding:8px; border:1px solid #ddd; }
-    th { background:#f1f1f1; }
-  </style>
+  <base target="_top">
+  <meta charset="UTF-8" />
+  <title>Cadastro + Listagem</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
+    form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background: #fff; width: 300px; }
+    label { display:block; margin-top:10px; font-weight:bold; }
+    input { width:100%; padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px; }
+    button { margin-top:15px; padding:10px; width:100%; background:#28a745; color:white; border:0; border-radius:4px; cursor:pointer; }
+    button:hover { background:#218838; }
+    table { border-collapse:collapse; width:100%; margin-top:20px; background:#fff; border:1px solid #ddd; }
+    th,td { padding:8px; border:1px solid #ddd; }
+    th { background:#f1f1f1; }
+  </style>
 </head>
 <body>
-  <h2>Cadastro de Usuário</h2>
-  <form id="cadastroForm">
-    <label>Nome:</label>
-    <input type="text" name="nome" required />
-    <label>Email:</label>
-    <input type="email" name="email" required />
-    <label>Telefone:</label>
-    <input type="text" name="telefone" required />
-    <button type="submit">Cadastrar</button>
-  </form>
+  <h2>Cadastro de Usuário</h2>
+  <form id="cadastroForm">
+    <label>Nome:</label>
+    <input type="text" name="nome" required />
+    
+    <label>Email:</label>
+    <input type="email" name="email" required />
+    
+    <label>Telefone:</label>
+    <input type="text" name="telefone" required />
+    
+    <button type="submit">Cadastrar</button>
+  </form>
 
-  <h2>Lista de Usuários</h2>
-  <table id="tabelaUsuarios">
-    <thead>
-      <tr><th>Nome</th><th>Email</th><th>Telefone</th><th>DataCadastro</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h2>Lista de Usuários</h2>
+  <table id="tabelaUsuarios">
+    <thead>
+      <tr><th>Nome</th><th>Email</th><th>Telefone</th><th>DataCadastro</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-  <script>
-    // 🚨 Aqui usamos a mesma URL do próprio WebApp
-    const apiURL = "<?= ScriptApp.getService().getUrl(); ?>";
+  <script>
+    // A URL será preenchida automaticamente pelo Apps Script
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwMwTVATDtTGOuz_cJwpJrbdFK2uoim2nSPg48k_AQyKywZ5y30P1gu2_JjOvmNszoCSA/exec";
 
-    // POST - salvar na planilha
-    document.getElementById("cadastroForm").addEventListener("submit", async function(e){
-      e.preventDefault();
-      const formData = {
-        nome: this.nome.value,
-        email: this.email.value,
-        telefone: this.telefone.value
-      };
-      try {
-        const resp = await fetch(apiURL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-        const data = await resp.json();
-        alert("Cadastro realizado!");
-        this.reset();
-        carregarUsuarios();
-      } catch (err) {
-        alert("Erro: " + err);
-      }
-    });
+    // Enviar cadastro (POST)
+    document.getElementById("cadastroForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      const formData = {
+        nome: this.nome.value,
+        email: this.email.value,
+        telefone: this.telefone.value
+      };
 
-    // GET - listar registros
-    async function carregarUsuarios() {
-      try {
-        const resp = await fetch(apiURL + "?api=1"); // adiciona parâmetro pra cair no "modo API"
-        const data = await resp.json();
-        const tbody = document.querySelector("#tabelaUsuarios tbody");
-        tbody.innerHTML = "";
-        data.registros.forEach(u => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${u.Nome || ""}</td>
-            <td>${u.Email || ""}</td>
-            <td>${u.Telefone || ""}</td>
-            <td>${u.DataCadastro || ""}</td>`;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    carregarUsuarios();
-  </script>
+      try {
+        const response = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        this.reset();
+        carregarUsuarios();
+      } catch (error) {
+        alert("Erro ao cadastrar.");
+      }
+    });
+
+    // Carregar lista de usuários (GET)
+    async function carregarUsuarios() {
+      try {
+        // Adiciona o parâmetro 'api=1' para a requisição GET
+        const response = await fetch(scriptURL + "?api=1");
+        const users = await response.json();
+        
+        const tbody = document.querySelector("#tabelaUsuarios tbody");
+        tbody.innerHTML = "";
+        
+        users.forEach(user => {
+          const tr = document.createElement("tr");
+          // Formata a data para dd/mm/aaaa
+          const dataCompleta = new Date(user.DataCadastro);
+          const dia = String(dataCompleta.getDate()).padStart(2, '0');
+          const mes = String(dataCompleta.getMonth() + 1).padStart(2, '0');
+          const ano = dataCompleta.getFullYear();
+          const dataFormatada = `${dia}/${mes}/${ano}`;
+          
+          tr.innerHTML = `
+            <td>${user.Nome}</td>
+            <td>${user.Email}</td>
+            <td>${user.Telefone}</td>
+            <td>${dataFormatada}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar usuários", error);
+      }
+    }
+
+    // Carregar usuários ao abrir
+    carregarUsuarios();
+  </script>
 </body>
 </html>
