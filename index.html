@@ -1,92 +1,286 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Clientes</title>
+    <title>Aniversário do Henry Benício</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Bebas+Neue&family=Permanent+Marker&display=swap');
+
+        :root {
+            --cor-principal: #3a5c8b; /* Azul mais escuro e masculino */
+            --cor-secundaria: #1e3a5c; /* Azul marinho */
+            --cor-fundo-convite: #e0f2f7; /* Azul claro de fundo */
+            --cor-texto-escuro: #2a2a2a;
+            --cor-texto-claro: #ffffff;
+            --cor-destaque: #d42d32; /* Vermelho para destaque de atenção */
+            --font-titulo: 'Bebas Neue', sans-serif;
+            --font-destaque: 'Permanent Marker', cursive;
+            --font-texto: 'Roboto', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: var(--font-texto);
+            color: var(--cor-texto-escuro);
             margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #a7d3e6, #5c9ac3);
+            text-align: center;
+            line-height: 1.6;
         }
+
         .container {
-            background-color: #fff;
-            padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--cor-fundo-convite);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border: 5px solid var(--cor-secundaria);
         }
-        h1 {
-            text-align: center;
-            color: #333;
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: url('https://www.transparenttextures.com/patterns/grid.png');
+            opacity: 0.1;
+            z-index: -1;
         }
-        .form-group {
-            margin-bottom: 1em;
+
+        .convite-header {
+            margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-bottom: 0.5em;
-            color: #555;
+
+        .convite-header h1 {
+            font-family: var(--font-titulo);
+            font-size: 3em;
+            color: var(--cor-principal);
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
         }
-        input {
-            width: 100%;
-            padding: 0.8em;
-            box-sizing: border-box;
+
+        .convite-header h2 {
+            font-family: var(--font-destaque);
+            font-size: 4em;
+            color: var(--cor-secundaria);
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+            margin: 0;
+            line-height: 1;
+        }
+
+        .info-secao {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px dashed var(--cor-principal);
+        }
+
+        .info-secao p {
+            margin: 5px 0;
+        }
+
+        .data-local {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--cor-principal);
+        }
+
+        .aviso-especial {
+            background-color: var(--cor-destaque);
+            color: var(--cor-texto-claro);
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 700;
+            margin: 15px 0;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cta-texto {
+            font-family: var(--font-destaque);
+            font-size: 1.8em;
+            color: var(--cor-secundaria);
+            margin-top: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .rsvp-form {
+            background-color: #f7f7f7;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
             border: 1px solid #ccc;
-            border-radius: 4px;
         }
-        button {
-            width: 100%;
-            padding: 0.8em;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+
+        .rsvp-form h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--cor-secundaria);
+            font-family: var(--font-titulo);
         }
-        button:hover {
-            background-color: #0056b3;
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
         }
-        .status-message {
-            margin-top: 1em;
-            text-align: center;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
         }
-        .success {
-            color: green;
+
+        .form-group input,
+        .form-group select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
         }
-        .error {
-            color: red;
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--cor-principal);
+        }
+
+        button {
+            background-color: var(--cor-principal);
+            color: var(--cor-texto-claro);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--cor-secundaria);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .resultado-mensagem {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .sucesso {
+            color: #28a745;
+        }
+
+        .erro {
+            color: #dc3545;
+        }
+
+        .footer-convite {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Cadastro de Clientes</h1>
-        <form id="customerForm" action="https://script.google.com/macros/s/AKfycbwOwr7H7CFGmZvgvBc7I35Ag5Oyu7eWqYPA5VDvze-g7ubpYLFfvFfHRBhLTDNpuCKdHQ/exec" method="POST">
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="telefone">Telefone</label>
-                <input type="tel" id="telefone" name="telefone">
-            </div>
-            <button type="submit">Cadastrar</button>
-        </form>
+        <div class="convite-header">
+            <h1>FAZENDINHA DO</h1>
+            <h2>HENRY BENÍCIO</h2>
+            <p>Venha comemorar comigo<br>o meu aniversário de 02 anos!</p>
+        </div>
+
+        <div class="info-secao">
+            <p class="data-local">13 de setembro, às 16:00</p>
+            <p>Chácara Yasmine</p>
+        </div>
+
+        <div class="aviso-especial">
+            <p>ATENÇÃO: É PROIBIDO O CONSUMO DE BEBIDA ALCOÓLICA</p>
+            <p>CADA CONVIDADO DEVE TRAZER SEU KIT CHURRASCO E REFRIGERANTE</p>
+        </div>
+        
+        <p class="cta-texto">ESPERAMOS POR VOCÊ!</p>
+
+        <div class="rsvp-form">
+            <h3>Confirme sua presença!</h3>
+            <form id="rsvpForm">
+                <div class="form-group">
+                    <label for="nome">Seu Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="adultos">Número de Adultos:</label>
+                    <input type="number" id="adultos" name="adultos" value="1" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="criancas">Número de Crianças:</label>
+                    <input type="number" id="criancas" name="criancas" value="0" min="0" required>
+                </div>
+                <button type="submit">Confirmar Presença</button>
+            </form>
+            <p class="resultado-mensagem" id="resultado"></p>
+        </div>
+        
+        <div class="footer-convite">
+            <p>Convidado não convida, obrigado(a)!</p>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('rsvpForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const data = new FormData(form);
+            const resultado = document.getElementById('resultado');
+
+            // URL do seu Google Apps Script já inserida
+            const url = 'https://script.google.com/macros/s/AKfycbxah8DVjJ1CokApT9QCLLqSFFz1sBdrkapRSNMv9RQ2WRxsOdjbqlLNjDIEMt8jrmQ/exec';
+
+            const formData = new URLSearchParams();
+            for (const pair of data.entries()) {
+                formData.append(pair[0], pair[1]);
+            }
+            formData.append('data', '20/08'); // Data atual no formato dd/mm
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            })
+            .then(() => {
+                resultado.textContent = 'Presença confirmada! Obrigado(a)!';
+                resultado.className = 'resultado-mensagem sucesso';
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                resultado.textContent = 'Erro ao confirmar presença. Tente novamente.';
+                resultado.className = 'resultado-mensagem erro';
+            });
+        });
+    </script>
+
 </body>
 </html>
